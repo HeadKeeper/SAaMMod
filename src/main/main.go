@@ -10,7 +10,9 @@ import (
 )
 
 /*
-	Values for check 1 141 134456
+	Values for check:
+	1 141 134456 - P < 50000
+	7 17000 160001 - P > 50000
 */
 
 func main() {
