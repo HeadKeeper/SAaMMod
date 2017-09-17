@@ -18,7 +18,7 @@ func getPairsCount(values []float64) int {
 
 func GetIndirectionIndications(values []float64) float64 {
 	k := getPairsCount(values)
-	return float64(2 * k) / math.Pow10(6)
+	return float64(2 * k) / float64(len(values))
 }
 
 func GetPeriod(values []float64) int {
@@ -32,7 +32,7 @@ func GetPeriod(values []float64) int {
 }
 
 func GetAperiod(values []float64, period, a, m int) int {
-	newValues := *generator.LemerMethod(period, a, m)
+	newValues := *generator.LemerMethod(period, a, m, len(values))
 	for i := 0; i < len(values) - 1 - period; i++ {
 		if (newValues[i] == newValues[i + period]) {
 			return i;

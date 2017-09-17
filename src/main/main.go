@@ -4,24 +4,29 @@ import (
 	"fmt"
 	"main/generator"
 	"main/util"
-	"github.com/aybabtme/uniplot/histogram"
-	"os"
 	"math"
+	"main/histogram"
 )
 
 /*
 	Values for check:
 	1 141 134456 - P < 50000
 	7 17000 160001 - P > 50000
+	7 17 121
 */
 
 func main() {
-	x0, a, m := util.GetInitValues()
-	values := generator.LemerMethod(x0, a, m)
-	bins := 20
-	hist := histogram.Hist(bins, *values)
-	maxWidth := 10
-	err := histogram.Fprint(os.Stdout, hist, histogram.Linear(maxWidth))
+
+}
+
+func secondLabMain() {
+
+}
+
+func firstLabMain() {
+	x0, a, m, n := util.GetInitValues()
+	values := generator.LemerMethod(x0, a, m, n)
+	err := histogram.DrawHistogram(*values)
 	if (err != nil) {
 		fmt.Println(err)
 	}
@@ -34,4 +39,6 @@ func main() {
 	fmt.Printf("%f -> %f", checkValue, math.Pi / 4)
 	fmt.Println()
 	fmt.Printf("P=%d, L=%d", period, aperiod)
+	fmt.Println()
+	//fmt.Println(util.GetGauss(expValue, standardDeviation, *values))
 }

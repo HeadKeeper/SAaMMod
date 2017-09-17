@@ -1,11 +1,10 @@
 package generator
 
 import (
-	"math"
 )
 
-func LemerMethod(x0, a, m int) *[]float64 {
-	var elementsCount = int(math.Pow10(6))
+func LemerMethod(x0, a, m, n int) *[]float64 {
+	var elementsCount = n
 	var randomValues []float64
 	previewX := getNewValue(x0, a, m)
 	for i := 0; i < elementsCount; i++ {

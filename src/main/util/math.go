@@ -28,3 +28,24 @@ func GetStatisticValues(values []float64) (float64, float64, float64) {
 	standartDeviation := getStandartDeviation(dispertion)
 	return expValue, dispertion, standartDeviation
 }
+
+
+/* 1 - Get Linear Random values*/
+func GetLinear(values []float64, a, b float64) []float64 {
+	var newValues []float64
+	for index, _ := range values {
+		value := a + (b - a)*values[index]
+		newValues = append(newValues, value)
+	}
+	return newValues
+}
+
+/* 2 - Get Gauss Random values */
+func GetGauss(expValue, standardDeviation float64, count int, values []float64) float64 {
+	var sum float64
+	for _, element := range values {
+		sum = sum + element - float64(len(values))/2
+	}
+	result := sum * math.Sqrt(12 / float64(len(values))) * standardDeviation
+	return result + expValue
+}
