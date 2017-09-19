@@ -1,8 +1,5 @@
 package generator
 
-import (
-)
-
 func LemerMethod(x0, a, m, n int) *[]float64 {
 	var elementsCount = n
 	var randomValues []float64
