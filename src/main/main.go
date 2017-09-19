@@ -10,17 +10,21 @@ import (
 
 /*
 	Values for check:
-	1 141 134456 - P < 50000
-	7 17000 160001 - P > 50000
-	7 17 121
+	1 141 134456 1000000 - P < 50000
+	7 17000 160001 1000000 - P > 50000
+	7 17 121 1000000
 */
 
 func main() {
-
+	secondLabMain()
 }
 
 func secondLabMain() {
-
+	x0, a, m, n := util.GetInitValues()
+	values := generator.LemerMethod(x0, a, m, n)
+	expValue, _, standardDeviation := util.GetStatisticValues(*values)
+	gaussValues := util.GetGauss(expValue, standardDeviation, 6, *values)
+	histogram.DrawHistogram(gaussValues)
 }
 
 func firstLabMain() {
