@@ -27,18 +27,18 @@ func firstLabMain() {
 	x0, a, m, n := util.GetInitValues()
 	values := generator.LemerMethod(x0, a, m, n)
 	err := histogram.DrawHistogram(*values)
-	if (err != nil) {
+	if err != nil {
 		fmt.Println(err)
 	}
-	expValue, dispertion, standardDeviation := util.GetStatisticValues(*values)
+	expValue, dispersion, standardDeviation := util.GetStatisticValues(*values)
 	checkValue := util.GetIndirectionIndications(*values)
 	period := util.GetPeriod(*values) - 1
-	aperiod := util.GetAperiod(*values, period, a, m) + period
-	fmt.Printf("M=%f --- D=%f --- SD=%f", expValue, dispertion, standardDeviation)
+	aperiodic := util.GetAperiodic(*values, period, a, m) + period
+	fmt.Printf("M=%f --- D=%f --- SD=%f", expValue, dispersion, standardDeviation)
 	fmt.Println()
 	fmt.Printf("%f -> %f", checkValue, math.Pi / 4)
 	fmt.Println()
-	fmt.Printf("P=%d, L=%d", period, aperiod)
+	fmt.Printf("P=%d, L=%d", period, aperiodic)
 	fmt.Println()
 	//fmt.Println(util.GetGauss(expValue, standardDeviation, *values))
 }

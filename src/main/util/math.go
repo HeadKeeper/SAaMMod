@@ -10,30 +10,30 @@ func getExpectedValue(values []float64) float64 {
 	return sum / float64(len(values))
 }
 
-func getDispertion(values []float64, expectedValue float64) float64 {
+func getDispersion(values []float64, expectedValue float64) float64 {
 	var sum float64
 	for _, element := range values {
-		sum = sum + math.Pow((element - expectedValue), 2)
+		sum = sum + math.Pow(element - expectedValue, 2)
 	}
 	return sum / float64(len(values))
 }
 
-func getStandartDeviation(dispertion float64) float64 {
-	return math.Sqrt(dispertion)
+func getStandardDeviation(dispersion float64) float64 {
+	return math.Sqrt(dispersion)
 }
 
 func GetStatisticValues(values []float64) (float64, float64, float64) {
 	expValue := getExpectedValue(values)
-	dispertion := getDispertion(values, expValue)
-	standartDeviation := getStandartDeviation(dispertion)
-	return expValue, dispertion, standartDeviation
+	dispersion := getDispersion(values, expValue)
+	standardDeviation := getStandardDeviation(dispersion)
+	return expValue, dispersion, standardDeviation
 }
 
 
 /* 1 - Get Linear Random values*/
 func GetLinear(values []float64, a, b float64) []float64 {
 	var newValues []float64
-	for index, _ := range values {
+	for index := range values {
 		value := a + (b - a)*values[index]
 		newValues = append(newValues, value)
 	}
