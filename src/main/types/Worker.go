@@ -16,3 +16,25 @@ func (thisWorker Worker) Equals(worker Worker) bool {
 	}
 	return busyEqual && probabilityEqual
 }
+
+func (thisWorker Worker) MakeStep(state State) []State {
+	var nextStates []State
+
+	currentState := State {
+		Workers: []Worker { thisWorker },
+	}
+
+	nextStates = append(nextStates, currentState)
+
+	if thisWorker.IsBusy {
+		stateWillNotPerform := State {
+			Workers: []Worker {{
+				IsBusy:               true,
+				ProbabilityToPerform: thisWorker.ProbabilityToPerform,
+			},
+		}}
+		nextStates = append(nextStates, currentState, stateWillNotPerform)
+	}
+
+	return nextStates
+}

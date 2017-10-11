@@ -38,3 +38,7 @@ func (thisCreator MessageCreator) WillSendMessageNextStep() int {
 func (thisCreator MessageCreator) SendMessage()  {
 	thisCreator.RemainStepsForNewMessage = thisCreator.StepsForNewMessage
 }
+
+func (thisCreator MessageCreator) MakeStep()  {
+	thisCreator.RemainStepsForNewMessage -= 1
+}
