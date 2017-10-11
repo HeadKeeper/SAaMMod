@@ -6,6 +6,7 @@ import (
 	"main/util"
 	"math"
 	"main/histogram"
+	"main/labs/lab3"
 )
 
 /*
@@ -17,7 +18,7 @@ import (
 */
 
 func main() {
-	secondLabMain()
+	thirdLabMain()
 }
 
 func secondLabMain() {
@@ -77,4 +78,8 @@ func firstLabMain() {
 	fmt.Printf("P=%d, L=%d", period, aperiodic)
 	fmt.Println()
 	//fmt.Println(util.GetGauss(expValue, standardDeviation, *values))
+}
+
+func thirdLabMain() {
+	lab3.Setup()
 }
