@@ -1,5 +1,11 @@
 package types
 
+const (
+	MESSAGE_CREATOR__SEND             = "SEND"
+	MESSAGE_CREATOR__NOT_SEND         = "NOT_SEND"
+	MESSAGE_CREATOR__PROBABILITY_SEND = "PROBABILITY_SEND"
+)
+
 type MessageCreator struct {
 	RemainStepsForNewMessage int
 
@@ -23,22 +29,36 @@ func (thisCreator MessageCreator) Equals(creator MessageCreator) bool {
 	return remainStepsEqual && stepsEqual && probabilityEqual
 }
 
-func (thisCreator MessageCreator) WillSendMessageNextStep() int {
+func (thisCreator MessageCreator) WillSendMessageNextStep() string {
 	if thisCreator.ProbabilityToCreateMessage >= 1 {
 		if thisCreator.RemainStepsForNewMessage == 1 {
-			return 1
+			return MESSAGE_CREATOR__SEND
 		} else {
-			return 0
+			return MESSAGE_CREATOR__NOT_SEND
 		}
 	} else {
-		return -1
+		return MESSAGE_CREATOR__PROBABILITY_SEND
 	}
 }
 
-func (thisCreator MessageCreator) SendMessage()  {
+func (thisCreator MessageCreator) SendMessage() MessageCreator {
 	thisCreator.RemainStepsForNewMessage = thisCreator.StepsForNewMessage
+	return thisCreator
 }
 
-func (thisCreator MessageCreator) MakeStep()  {
+func (thisCreator MessageCreator) MakeStep() MessageCreator {
 	thisCreator.RemainStepsForNewMessage -= 1
+	return thisCreator
+}
+
+func (thisCreator MessageCreator) Sent() bool {
+	return thisCreator.RemainStepsForNewMessage == thisCreator.StepsForNewMessage
+}
+
+func (thisCreator MessageCreator) CreateCopy() MessageCreator {
+	var copied MessageCreator
+	copied.StepsForNewMessage = thisCreator.StepsForNewMessage
+	copied.RemainStepsForNewMessage = thisCreator.RemainStepsForNewMessage
+	copied.ProbabilityToCreateMessage = thisCreator.ProbabilityToCreateMessage
+	return copied
 }

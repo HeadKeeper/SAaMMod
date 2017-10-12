@@ -12,6 +12,25 @@ type State struct {
 	Parent *State
 	Children []*State
 	Name string
+	AlreadyCreated bool
+}
+
+func (thisState State) FullEquals(state State) bool {
+	parentEqual := false
+	if thisState.Parent == state.Parent {
+		parentEqual = true
+	}
+
+	childrenNotEqual := true
+	if len(thisState.Children) == len(state.Children) {
+		for e := range thisState.Children {
+			if thisState.Children[e] != (state.Children[e]) {
+				childrenNotEqual = false
+			}
+		}
+	}
+
+	return !childrenNotEqual && parentEqual && thisState.Equals(state)
 }
 
 func (thisState State) Equals(state State) bool {
@@ -50,6 +69,10 @@ func (thisState State) GetName() string {
 		}
 	}
 
+	if thisState.AlreadyCreated {
+		result += "_C"
+	}
+
 	return result
 }
 
@@ -60,7 +83,7 @@ func (thisState State) Configure(creator MessageCreator, queue Queue, workers []
 	thisState.Name = thisState.GetName()
 }
 
-func (thisState State) CheckWorkersBusy() (bool, []bool) {
+func (thisState State) WorkersBusy() bool {
 	var busyValues []bool
 	busy := true
 	for _, worker := range thisState.Workers {
@@ -68,17 +91,44 @@ func (thisState State) CheckWorkersBusy() (bool, []bool) {
 		if !worker.IsBusy { busy = false }
 	}
 
-	return busy, busyValues
+	return busy
 }
 
-func (thisState State) SetParent(parent State) {
+func (thisState State) AnyWorkerFree() bool {
+	busy := true
+	for _, worker := range thisState.Workers {
+		if !worker.IsBusy {
+			busy = false
+		}
+	}
+
+	return busy == false
+}
+
+func (thisState State) SetParent(parent State) State {
 	thisState.Parent = &parent
+	return thisState
 }
 
-func (thisState State) AddChildren(children []State) {
+func (thisState State) AddChildren(children []State) State {
 	for _, child := range children {
 		thisState.Children = append(thisState.Children, &child)
 	}
+	return thisState
+}
+
+func (thisState State) CreateCopy() State {
+	var copiedState State
+	copiedState.MessageCreator = thisState.MessageCreator.CreateCopy()
+	copiedState.Queue = thisState.Queue.CreateCopy()
+	for _, worker := range thisState.Workers {
+		copiedState.Workers = append(copiedState.Workers, worker.CreateCopy())
+	}
+	copiedState.Parent = thisState.Parent
+	for _, child := range copiedState.Children {
+		copiedState.Children = append(copiedState.Children, child)
+	}
+	return copiedState
 }
 
 

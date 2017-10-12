@@ -17,24 +17,34 @@ func (thisWorker Worker) Equals(worker Worker) bool {
 	return busyEqual && probabilityEqual
 }
 
-func (thisWorker Worker) MakeStep(state State) []State {
+func (thisWorker Worker) MakeStep(state State, workerNumber int, messageSent bool) []State {
 	var nextStates []State
 
-	currentState := State {
-		Workers: []Worker { thisWorker },
-	}
-
-	nextStates = append(nextStates, currentState)
-
 	if thisWorker.IsBusy {
-		stateWillNotPerform := State {
-			Workers: []Worker {{
-				IsBusy:               true,
-				ProbabilityToPerform: thisWorker.ProbabilityToPerform,
-			},
-		}}
-		nextStates = append(nextStates, currentState, stateWillNotPerform)
+		stateWorkerFree := state.CreateCopy()
+		stateWorkerFree.Workers[workerNumber] = Worker {
+			ProbabilityToPerform: thisWorker.ProbabilityToPerform,
+			IsBusy: false,
+		}
+		nextStates = append(nextStates, stateWorkerFree)
 	}
+
+	if messageSent && !thisWorker.IsBusy {
+		stateWorkerBusy := state.CreateCopy()
+		stateWorkerBusy.Workers[workerNumber].IsBusy = true
+		nextStates = append(nextStates, stateWorkerBusy)
+	}
+
+	stateWorker := state.CreateCopy()
+	stateWorker.Workers[workerNumber] = thisWorker
+	nextStates = append(nextStates, stateWorker)
 
 	return nextStates
+}
+
+func (thisWorker Worker) CreateCopy() Worker {
+	var copied Worker
+	copied.ProbabilityToPerform = thisWorker.ProbabilityToPerform
+	copied.IsBusy = thisWorker.IsBusy
+	return copied
 }

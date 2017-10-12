@@ -81,6 +81,6 @@ func firstLabMain() {
 }
 
 func thirdLabMain() {
-	lab3.Setup()
+	//lab3.Setup()
 	lab3.Perform()
 }

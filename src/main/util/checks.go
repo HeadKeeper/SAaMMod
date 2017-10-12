@@ -3,6 +3,7 @@ package util
 import (
 	"math"
 	"main/generator"
+	"main/types"
 )
 
 func getPairsCount(values []float64) int {
@@ -39,4 +40,14 @@ func GetAperiodic(values []float64, period, a, m int) int {
 		}
 	}
 	return 0
+}
+
+func StatesContainsState(states []types.State, state types.State) bool {
+	result := false
+	for _, statesValue := range states {
+		if statesValue.GetName() == state.GetName() {
+			result = true
+		}
+	}
+	return result
 }
